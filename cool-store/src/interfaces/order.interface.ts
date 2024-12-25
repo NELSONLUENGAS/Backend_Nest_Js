@@ -5,16 +5,11 @@ export enum OrderStatus {
 }
 
 export interface IOrder {
+    id: string
     customerId: string;
     productId: string;
     quantity: number;
     status: OrderStatus;
     totalPrice: number;
     shippingAddress: string;
-}
-
-export interface IOrderUpdate {
-    status?: OrderStatus;
-    shippingAddress?: string;
-    totalPrice?: number;
 }

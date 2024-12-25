@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { ROUTES } from 'src/constants/routes';
-import { IProductCreate, IProductUpdate } from 'src/interfaces/product.interface';
+import { CreateProductDto, UpdateProductDto } from 'src/dtos/products.dto';
 import { ProductsService } from 'src/services/products.service';
 
 @Controller(ROUTES.PRODUCTS.BASE)
@@ -10,7 +10,7 @@ export class ProductsController {
 
     @Post(ROUTES.PRODUCTS.CREATE)
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() product: IProductCreate) {
+    create(@Body() product: CreateProductDto) {
         const response = this.productService.create(product)
 
         if (response.ok) {
@@ -70,7 +70,7 @@ export class ProductsController {
 
     @Put(ROUTES.PRODUCTS.UPDATE)
     @HttpCode(HttpStatus.OK)
-    update(@Param('id') productId: string, @Body() product: IProductUpdate) {
+    update(@Param('id') productId: string, @Body() product: UpdateProductDto) {
         const response = this.productService.update(productId, product)
 
         if (response.ok) {

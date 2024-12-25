@@ -1,7 +1,5 @@
 export interface IBrand {
+    id: string
     name: string
 }
 
-export interface IBrandUpdate {
-    name?: string
-}

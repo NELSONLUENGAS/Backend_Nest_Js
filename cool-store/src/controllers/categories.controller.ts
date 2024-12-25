@@ -1,25 +1,22 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ROUTES } from 'src/constants/routes';
-import { ICategory, ICategoryUpdate } from 'src/interfaces/category.interface';
+import { CreateCategoryDto, UpdateCategoryDto } from 'src/dtos/categories.dto';
+import { CategoriesService } from 'src/services/categories.service';
 
 @Controller(ROUTES.CATEGORIES.BASE)
 export class CategoriesController {
 
+    constructor(private categoryService: CategoriesService) { }
+
     @Post(ROUTES.CATEGORIES.CREATE)
     @HttpCode(HttpStatus.CREATED)
-    create(@Body() category: ICategory) {
+    create(@Body() category: CreateCategoryDto) {
 
     }
 
     @Get(ROUTES.CATEGORIES.GET_ALL)
     @HttpCode(HttpStatus.OK)
-    getAll(@Query('limit') limit = 15, @Query('page') page = 1) {
-
-    }
-
-    @Get(ROUTES.CATEGORIES.SEARCH)
-    @HttpCode(HttpStatus.OK)
-    search(@Query('s') search = '') {
+    getAll() {
 
     }
 
@@ -31,7 +28,7 @@ export class CategoriesController {
 
     @Put(ROUTES.CATEGORIES.UPDATE)
     @HttpCode(HttpStatus.OK)
-    update(@Param('id') categoryId: string, @Body() category: ICategoryUpdate) {
+    update(@Param('id') categoryId: string, @Body() category: UpdateCategoryDto) {
 
     }
 

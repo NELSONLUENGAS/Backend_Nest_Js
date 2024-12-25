@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IProduct, IProductCreate, IProductUpdate } from 'src/interfaces/product.interface';
+import { CreateProductDto, UpdateProductDto } from 'src/dtos/products.dto';
+import { IProduct } from 'src/interfaces/product.interface';
 import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
@@ -13,6 +14,7 @@ export class ProductsService {
             price: 499.99,
             stock: 20,
             category: 'Electronics',
+            brand: 'TechCorp'
         },
         {
             id: '2',
@@ -22,6 +24,7 @@ export class ProductsService {
             price: 899.99,
             stock: 15,
             category: 'Electronics',
+            brand: 'Innovatek'
         },
         {
             id: '3',
@@ -31,6 +34,7 @@ export class ProductsService {
             price: 120.99,
             stock: 50,
             category: 'Audio',
+            brand: 'SoundWave'
         },
         {
             id: '4',
@@ -40,6 +44,7 @@ export class ProductsService {
             price: 199.99,
             stock: 30,
             category: 'Wearables',
+            brand: 'TimeTech'
         },
         {
             id: '5',
@@ -49,6 +54,7 @@ export class ProductsService {
             price: 649.99,
             stock: 10,
             category: 'Electronics',
+            brand: 'VisionPlus'
         },
         {
             id: '6',
@@ -58,6 +64,7 @@ export class ProductsService {
             price: 399.99,
             stock: 25,
             category: 'Gaming',
+            brand: 'PlayNext'
         },
         {
             id: '7',
@@ -67,6 +74,7 @@ export class ProductsService {
             price: 19.99,
             stock: 100,
             category: 'Accessories',
+            brand: 'ClickMaster'
         },
         {
             id: '8',
@@ -76,6 +84,7 @@ export class ProductsService {
             price: 29.99,
             stock: 75,
             category: 'Accessories',
+            brand: 'PowerUp'
         },
         {
             id: '9',
@@ -85,6 +94,7 @@ export class ProductsService {
             price: 59.99,
             stock: 40,
             category: 'Audio',
+            brand: 'SoundWave'
         },
         {
             id: '10',
@@ -94,96 +104,107 @@ export class ProductsService {
             price: 299.99,
             stock: 18,
             category: 'Photography',
+            brand: 'PhotoGenius'
         },
         {
             id: '11',
-            name: 'Electric Kettle',
-            description: 'Stainless steel electric kettle with automatic shutoff.',
-            image: 'https://example.com/products/electric_kettle.jpg',
-            price: 39.99,
-            stock: 55,
+            name: 'Smart Refrigerator',
+            description: 'A smart refrigerator with Wi-Fi and voice control.',
+            image: 'https://example.com/products/smart_refrigerator.jpg',
+            price: 1499.99,
+            stock: 5,
             category: 'Home Appliances',
+            brand: 'KitchenPro'
         },
         {
             id: '12',
-            name: 'Blender Pro',
-            description: 'High-speed blender with multiple speed settings.',
-            image: 'https://example.com/products/blender_pro.jpg',
-            price: 89.99,
-            stock: 35,
-            category: 'Home Appliances',
+            name: 'Gaming Chair',
+            description: 'Comfortable gaming chair with ergonomic design.',
+            image: 'https://example.com/products/gaming_chair.jpg',
+            price: 199.99,
+            stock: 20,
+            category: 'Furniture',
+            brand: 'ErgoChairs'
         },
         {
             id: '13',
-            name: 'Smart Refrigerator',
-            description: 'Smart refrigerator with touchscreen control and Wi-Fi connectivity.',
-            image: 'https://example.com/products/smart_fridge.jpg',
-            price: 1499.99,
-            stock: 8,
-            category: 'Home Appliances',
+            name: 'Drone X5',
+            description: 'Drone with 4K camera and GPS tracking.',
+            image: 'https://example.com/products/drone_x5.jpg',
+            price: 399.99,
+            stock: 12,
+            category: 'Photography',
+            brand: 'AeroTech'
         },
         {
             id: '14',
-            name: 'Kitchen Mixer',
-            description: 'Stand mixer with multiple attachments for baking and cooking.',
-            image: 'https://example.com/products/kitchen_mixer.jpg',
-            price: 169.99,
-            stock: 20,
+            name: 'Electric Kettle',
+            description: 'Fast boiling electric kettle with 1.7L capacity.',
+            image: 'https://example.com/products/electric_kettle.jpg',
+            price: 49.99,
+            stock: 30,
             category: 'Home Appliances',
+            brand: 'QuickBoil'
         },
         {
             id: '15',
-            name: 'Men\'s Jacket',
-            description: 'Stylish men’s jacket, perfect for winter weather.',
-            image: 'https://example.com/products/mens_jacket.jpg',
+            name: 'Running Shoes',
+            description: 'Lightweight running shoes for everyday use.',
+            image: 'https://example.com/products/running_shoes.jpg',
             price: 79.99,
-            stock: 50,
-            category: 'Clothing',
+            stock: 60,
+            category: 'Footwear',
+            brand: 'AthleteGear'
         },
         {
             id: '16',
-            name: 'Women\'s Sweater',
-            description: 'Soft and warm women’s sweater in multiple colors.',
-            image: 'https://example.com/products/womens_sweater.jpg',
-            price: 49.99,
-            stock: 60,
-            category: 'Clothing',
+            name: 'Tablet Pro',
+            description: 'High-performance tablet with stylus support.',
+            image: 'https://example.com/products/tablet_pro.jpg',
+            price: 599.99,
+            stock: 25,
+            category: 'Electronics',
+            brand: 'Innovatek'
         },
         {
             id: '17',
-            name: 'Running Shoes',
-            description: 'Lightweight and breathable running shoes for men and women.',
-            image: 'https://example.com/products/running_shoes.jpg',
-            price: 69.99,
-            stock: 100,
-            category: 'Footwear',
+            name: 'Action Camera',
+            description: 'Durable action camera with 4K recording.',
+            image: 'https://example.com/products/action_camera.jpg',
+            price: 199.99,
+            stock: 35,
+            category: 'Photography',
+            brand: 'PhotoGenius'
         },
         {
             id: '18',
-            name: 'Leather Wallet',
-            description: 'Premium leather wallet with RFID blocking.',
-            image: 'https://example.com/products/leather_wallet.jpg',
-            price: 39.99,
-            stock: 200,
-            category: 'Accessories',
+            name: 'Fitness Tracker',
+            description: 'Fitness tracker with heart rate monitoring.',
+            image: 'https://example.com/products/fitness_tracker.jpg',
+            price: 49.99,
+            stock: 80,
+            category: 'Wearables',
+            brand: 'FitLife'
         },
         {
             id: '19',
-            name: 'Backpack Pro',
-            description: 'Durable and spacious backpack with a laptop compartment.',
-            image: 'https://example.com/products/backpack_pro.jpg',
-            price: 49.99,
-            stock: 120,
-            category: 'Accessories',
+            name: 'Smart Thermostat',
+            description: 'Energy-saving smart thermostat with app control.',
+            image: 'https://example.com/products/smart_thermostat.jpg',
+            price: 249.99,
+            stock: 10,
+            category: 'Home Appliances',
+            brand: 'EcoSmart'
         },
         {
             id: '20',
-            name: 'Sports Watch',
-            description: 'Water-resistant sports watch with GPS and heart rate monitor.',
-            image: 'https://example.com/products/sports_watch.jpg',
-            price: 129.99,
-            stock: 30,
-            category: 'Wearables',
+            name: 'Electric Scooter',
+            description: 'Eco-friendly electric scooter with a 25-mile range.',
+            image: 'https://example.com/products/electric_scooter.jpg',
+            price: 499.99,
+            stock: 15,
+            category: 'Transportation',
+            brand: 'EcoRide'
         }
     ]
 
@@ -269,7 +290,7 @@ export class ProductsService {
         }
     }
 
-    create(product: IProductCreate) {
+    create(product: CreateProductDto) {
         const id: string = uuidv4()
 
         const newProduct = {
@@ -286,7 +307,7 @@ export class ProductsService {
         }
     }
 
-    update(id: string, productUpdated: IProductUpdate) {
+    update(id: string, productUpdated: UpdateProductDto) {
         const response = this.findOne(id)
         if (!response.ok) {
 
