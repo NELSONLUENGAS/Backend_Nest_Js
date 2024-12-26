@@ -8,7 +8,6 @@ export class AppService {
     constructor(@Inject('TASKS') private tasks: Tasks, @Inject(config.KEY) private configService: ConfigType<typeof config>) { }
     getHello(): string {
         const apiKey = this.configService.apiKey
-        console.log(this.tasks)
         return 'Hello World!😀' + apiKey;
     }
 }
