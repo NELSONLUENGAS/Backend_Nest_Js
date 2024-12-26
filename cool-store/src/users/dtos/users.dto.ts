@@ -1,6 +1,6 @@
-import { PartialType } from "@nestjs/mapped-types";
+import { PartialType } from "@nestjs/swagger";
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { UserRole } from "src/interfaces/user.interface";
+import { UserRole } from "src/users/interfaces/user.interface";
 
 export class CreateUserDto {
     @IsString()

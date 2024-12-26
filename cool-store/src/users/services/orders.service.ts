@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderDto, UpdateOrderDto } from 'src/dtos/orders.dto';
-import { IOrder, OrderStatus } from 'src/interfaces/order.interface';
+import { ProductsService } from 'src/products/services/products.service';
+import { CreateOrderDto, UpdateOrderDto } from 'src/users/dtos/orders.dto';
+import { IOrder, OrderStatus } from 'src/users/interfaces/order.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class OrdersService {
+
+    constructor(readonly productService: ProductsService) { }
+
     private orders: IOrder[] = [
         { id: '1', customerId: '1', productId: '1', quantity: 2, status: OrderStatus.PENDING, totalPrice: 200, shippingAddress: '123 Main St, City, Country' },
         { id: '2', customerId: '2', productId: '2', quantity: 1, status: OrderStatus.SHIPPED, totalPrice: 150, shippingAddress: '456 Elm St, City, Country' },
@@ -57,16 +61,22 @@ export class OrdersService {
                 msg: 'No orders found for this customer'
             };
         } else {
+            const ordersComplete = orders.map((order) => ({
+                ...order,
+                productDetail: this.productService.findOne(order.productId).data
+            }))
+
             return {
                 ok: true,
                 msg: 'Orders fetched successfully!',
-                data: orders
+                data: ordersComplete
             };
         }
     }
 
     findOne(id: string) {
         const order = this.orders.find((order) => order.id === id);
+
         if (!order) {
             return {
                 ok: false,
@@ -74,6 +84,7 @@ export class OrdersService {
                 msg: 'No order found'
             };
         } else {
+            order['productDetail'] = this.productService.findOne(order?.productId).data
             return {
                 ok: true,
                 data: order,
@@ -152,6 +163,7 @@ export class OrdersService {
     }
 
     findByStatus(status: OrderStatus) {
+        console.log(status)
         const orders = this.orders.filter((order) => order.status === status);
 
         if (!orders.length) {

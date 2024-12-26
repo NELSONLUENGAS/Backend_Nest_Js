@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from 'src/dtos/products.dto';
-import { IProduct } from 'src/interfaces/product.interface';
+import { CreateProductDto, UpdateProductDto } from 'src/products/dtos/products.dto';
+import { IProduct } from 'src/products/interfaces/product.interface';
 import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
@@ -211,6 +211,7 @@ export class ProductsService {
     findAll(limit: number, page: number) {
         const offset = Math.abs(page - 1) * limit
         const products = this.products.slice(offset, offset + limit);
+
         if (!products.length) {
 
             return {

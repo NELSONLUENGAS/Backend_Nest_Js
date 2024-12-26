@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCustomerDto, UpdateCustomerDto } from 'src/dtos/customers.dto';
-import { ICustomer } from 'src/interfaces/customer.interface';
+import { CreateCustomerDto, UpdateCustomerDto } from 'src/users/dtos/customers.dto';
+import { ICustomer } from 'src/users/interfaces/customer.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

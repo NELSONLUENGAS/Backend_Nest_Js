@@ -1,5 +1,5 @@
 import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
-import { OrderStatus } from 'src/interfaces/order.interface';
+import { OrderStatus } from 'src/users/interfaces/order.interface';
 
 export class CreateOrderDto {
     @IsString()

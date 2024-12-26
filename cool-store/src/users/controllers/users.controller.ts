@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { ROUTES } from 'src/constants/routes';
-import { CreateUserDto, UpdateUserDto } from 'src/dtos/users.dto';
-import { IUser, UserRole } from 'src/interfaces/user.interface';
-import { UsersService } from 'src/services/users.service';
+import { CreateUserDto, UpdateUserDto } from 'src/users/dtos/users.dto';
+import { IUser, UserRole } from 'src/users/interfaces/user.interface';
+import { UsersService } from 'src/users/services/users.service';
 
 @Controller(ROUTES.USERS.BASE)
 export class UsersController {

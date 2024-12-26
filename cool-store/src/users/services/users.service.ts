@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from 'src/dtos/users.dto';
-import { IUser, UserRole } from 'src/interfaces/user.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import config from 'src/config';
+import { CreateUserDto, UpdateUserDto } from 'src/users/dtos/users.dto';
+import { IUser, UserRole } from 'src/users/interfaces/user.interface';
 import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class UsersService {
-
+    constructor(@Inject(config.KEY) private configService: ConfigType<typeof config>) { }
     private users: IUser[] = [
         { id: '1', username: 'john_doe', email: 'john.doe@example.com', password: 'password123', fullName: 'John Doe', role: UserRole.USER },
         { id: '2', username: 'jane_smith', email: 'jane.smith@example.com', password: 'password123', fullName: 'Jane Smith', role: UserRole.ADMIN },
@@ -30,6 +32,8 @@ export class UsersService {
     ];
 
     findAll(limit: number, page: number) {
+        const apiKey = this.configService.apiKey
+        console.log(apiKey)
         const offset = Math.abs(page - 1) * limit;
         const users = this.users.slice(offset, offset + limit);
 

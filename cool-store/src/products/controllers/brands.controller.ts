@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, HttpCode, HttpStatus, NotFoundException } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ROUTES } from 'src/constants/routes';
-import { CreateBrandDto, UpdateBrandDto } from 'src/dtos/brands.dto';
-import { BrandsService } from 'src/services/brands.service';
+import { CreateBrandDto, UpdateBrandDto } from 'src/products/dtos/brands.dto';
+import { BrandsService } from 'src/products/services/brands.service';
 
 @Controller(ROUTES.BRANDS.BASE)
 export class BrandsController {

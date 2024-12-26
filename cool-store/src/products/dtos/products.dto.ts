@@ -1,4 +1,4 @@
-import { PartialType } from "@nestjs/mapped-types";
+import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { IsInt, IsNotEmpty, IsNumber, IsPositive, IsString, IsUrl, } from "class-validator";
 
 export class CreateProductDto {
@@ -26,6 +26,7 @@ export class CreateProductDto {
 
     @IsString()
     @IsNotEmpty()
+    @ApiProperty({ description: 'Category Name for the product' })
     readonly category: string;
 
     @IsString()

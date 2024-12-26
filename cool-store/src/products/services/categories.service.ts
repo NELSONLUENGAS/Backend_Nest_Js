@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto, UpdateCategoryDto } from 'src/dtos/categories.dto';
-import { ICategory } from 'src/interfaces/category.interface';
+import { CreateCategoryDto, UpdateCategoryDto } from 'src/products/dtos/categories.dto';
+import { ICategory } from 'src/products/interfaces/category.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBrandDto, UpdateBrandDto } from 'src/dtos/brands.dto';
-import { IBrand } from 'src/interfaces/brand.interface';
+import { CreateBrandDto, UpdateBrandDto } from 'src/products/dtos/brands.dto';
+import { IBrand } from 'src/products/interfaces/brand.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

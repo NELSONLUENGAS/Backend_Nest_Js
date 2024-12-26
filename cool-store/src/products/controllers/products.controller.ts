@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { ROUTES } from 'src/constants/routes';
-import { CreateProductDto, UpdateProductDto } from 'src/dtos/products.dto';
-import { ProductsService } from 'src/services/products.service';
+import { CreateProductDto, UpdateProductDto } from 'src/products/dtos/products.dto';
+import { ProductsService } from 'src/products/services/products.service';
 
 @Controller(ROUTES.PRODUCTS.BASE)
 export class ProductsController {
@@ -10,6 +11,7 @@ export class ProductsController {
 
     @Post(ROUTES.PRODUCTS.CREATE)
     @HttpCode(HttpStatus.CREATED)
+    @ApiOperation({ summary: 'Create a new product' })
     create(@Body() product: CreateProductDto) {
         const response = this.productService.create(product)
 
@@ -22,7 +24,10 @@ export class ProductsController {
 
     @Get(ROUTES.PRODUCTS.GET_ALL)
     @HttpCode(HttpStatus.OK)
-    getAll(@Query('limit') limit = 15, @Query('page') page = 1) {
+    @ApiOperation({ summary: 'List all products' })
+    @ApiQuery({ name: 'limit', type: 'number', example: 15, required: false, description: 'Number to limit products', minimum: 1, default: 15 })
+    @ApiQuery({ name: 'page', type: 'number', example: 2, required: false, description: 'Current page', minimum: 1, default: 1 })
+    getAll(@Query('limit', ParseIntPipe) limit = 15, @Query('page', ParseIntPipe) page = 1) {
         const response = this.productService.findAll(limit, page)
 
         if (response.ok) {
