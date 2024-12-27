@@ -4,7 +4,7 @@ export const ROUTES = {
         CREATE: '',
         GET_ALL: '',
         SEARCH: 'search',
-        GET_ALL_BY_CATEGORY: 'category/:name',
+        GET_BY_CATEGORY: 'category/:name',
         GET_ONE: ':id',
         DELETE: ':id',
         UPDATE: ':id'

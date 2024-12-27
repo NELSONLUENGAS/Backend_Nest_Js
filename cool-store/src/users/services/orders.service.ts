@@ -63,7 +63,7 @@ export class OrdersService {
         } else {
             const ordersComplete = orders.map((order) => ({
                 ...order,
-                productDetail: this.productService.findOne(order.productId).data
+                // productDetail: this.productService.findOne(order.productId).data
             }))
 
             return {
@@ -84,7 +84,7 @@ export class OrdersService {
                 msg: 'No order found'
             };
         } else {
-            order['productDetail'] = this.productService.findOne(order?.productId).data
+            // order['productDetail'] = this.productService.findOne(order?.productId).data
             return {
                 ok: true,
                 data: order,

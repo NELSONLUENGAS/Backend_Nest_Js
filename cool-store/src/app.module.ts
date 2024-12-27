@@ -12,7 +12,6 @@ import { DatabaseModule } from './database/database.module';
 import { environments } from './environments';
 import config from './config';
 
-
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -22,7 +21,11 @@ import config from './config';
             validationSchema: Joi.object({
                 API_KEY: Joi.string().required(),
                 DB_NAME: Joi.string().required(),
-                DB_PORT: Joi.string().optional(),
+                DB_USER: Joi.string().required(),
+                DB_PASSWORD: Joi.string().required(),
+                DB_PORT: Joi.number().required(),
+                DB_HOST: Joi.string().required(),
+                DB_CONECCTION: Joi.string().required(),
             })
         }),
         UsersModule,

@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  mongo:
+    image: mongo:4.4
+    environment:
+      DB_USER: 'root'
+      DB_PASSWORD: 'root'
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_data:/data/db

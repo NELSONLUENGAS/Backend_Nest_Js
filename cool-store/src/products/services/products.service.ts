@@ -1,10 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateProductDto, UpdateProductDto } from 'src/products/dtos/products.dto';
 import { IProduct } from 'src/products/interfaces/product.interface';
 import { v4 as uuidv4 } from 'uuid'
+import { ProductModel } from '../models/product.model';
+import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
+
 
 @Injectable()
 export class ProductsService {
+
+    constructor(
+        @InjectModel(ProductModel.name) private productModel: Model<ProductModel>
+    ) { }
+
     private products: IProduct[] = [
         {
             id: '1',
@@ -210,132 +220,246 @@ export class ProductsService {
 
     findAll(limit: number, page: number) {
         const offset = Math.abs(page - 1) * limit
-        const products = this.products.slice(offset, offset + limit);
 
-        if (!products.length) {
-
-            return {
-                ok: false,
-                data: [],
-                msg: 'No data found'
-            }
-        } else {
-
-            return {
-                ok: true,
-                msg: 'Products fetched successfully!',
-                data: products
-            }
-        }
+        return from(
+            this.productModel
+                .find()
+                .skip(offset)
+                .limit(limit)
+                .exec()
+        ).pipe(
+            map((products) => {
+                if (products.length === 0) {
+                    return {
+                        ok: false,
+                        data: [],
+                        msg: 'No data found',
+                    };
+                } else {
+                    return {
+                        ok: true,
+                        msg: 'Products fetched successfully!',
+                        data: products,
+                    };
+                }
+            }),
+            catchError((error) => {
+                return of({
+                    ok: false,
+                    data: [],
+                    msg: `Error fetching data: ${error.message}`,
+                });
+            })
+        );
     }
 
-    findAllByCategory(name: string) {
-        const products = this.products.filter((product) => product.category.toLowerCase() === name.toLowerCase())
+    findByCategory(name: string) {
 
-        if (!products.length) {
-
-            return {
-                ok: false,
-                data: [],
-                msg: 'No data found'
-            }
-        } else {
-
-            return {
-                ok: true,
-                msg: 'Products fetched successfully!',
-                data: products
-            }
-        }
+        return from(
+            this.productModel
+                .find()
+                .where({
+                    category: name
+                })
+                .exec()
+        ).pipe(
+            map((products) => {
+                if (products.length === 0) {
+                    return {
+                        ok: false,
+                        data: [],
+                        msg: 'No data found',
+                    };
+                } else {
+                    return {
+                        ok: true,
+                        msg: 'Products fetched successfully!',
+                        data: products,
+                    };
+                }
+            }),
+            catchError((error) => {
+                return of({
+                    ok: false,
+                    data: [],
+                    msg: `Error fetching data: ${error.message}`,
+                });
+            })
+        )
     }
 
     findOne(id: string) {
-        const product = this.products.find((product) => product.id == id)
-        if (!product) {
+        return from(
+            this.productModel
+                .findById(id)
+                .exec()
+        ).pipe(
+            map((product) => {
+                if (!product) {
+                    return {
+                        ok: false,
+                        data: [],
+                        msg: 'No data found',
+                    };
+                } else {
+                    return {
+                        ok: true,
+                        msg: 'Product fetched successfully!',
+                        data: product,
+                    };
 
-            return {
-                ok: false,
-                data: {},
-                msg: 'No data found'
-            }
-        } else {
-
-            return {
-                ok: true,
-                data: product,
-                msg: 'Product fetched successfully!',
-            }
-        }
+                }
+            }),
+            catchError((error) => {
+                return of({
+                    ok: false,
+                    data: [],
+                    msg: `Error fetching data: ${error.message}`,
+                });
+            })
+        )
     }
 
     search(query: string) {
-        const products = this.products.filter((product) =>
-            Object.values(product).some((value) =>
-                value.toString().toLowerCase().includes(query.toLowerCase())
-            ))
 
-        if (!products.length) {
-
-            return {
-                ok: false,
-                data: [],
-                msg: 'No data found'
-            }
-        } else {
-
-            return {
-                ok: true,
-                msg: 'Products fetched successfully!',
-                data: products
-            }
-        }
+        return of(query).pipe(
+            switchMap((queryTerm) => {
+                return from(
+                    this.productModel
+                        .find({
+                            $or: [
+                                { name: { $regex: queryTerm, $options: 'i' } },
+                                { description: { $regex: queryTerm, $options: 'i' } },
+                                { category: { $regex: queryTerm, $options: 'i' } },
+                            ],
+                        }).exec()
+                ).pipe(
+                    map((products) => {
+                        if (!products || products.length === 0) {
+                            return {
+                                ok: false,
+                                data: [],
+                                msg: 'No data found',
+                            };
+                        } else {
+                            return {
+                                ok: true,
+                                msg: 'Products fetched successfully!',
+                                data: products,
+                            };
+                        }
+                    }),
+                    catchError((error) => {
+                        return of({
+                            ok: false,
+                            data: [],
+                            msg: `Error fetching data: ${error.message}`,
+                        });
+                    })
+                );
+            })
+        );
     }
 
     create(product: CreateProductDto) {
-        const id: string = uuidv4()
-
-        const newProduct = {
-            ...product,
-            id
-        }
-
-        this.products.push(newProduct)
-
-        return {
-            ok: true,
-            data: newProduct,
-            msg: 'Product created successfully!',
-        }
+        return from(this.productModel.create(product)).pipe(
+            map(savedProduct => ({
+                ok: true,
+                msg: 'Product created successfully!',
+                data: savedProduct
+            })),
+            catchError(error => of({
+                ok: false,
+                msg: `Error creating product: ${error.message}`,
+                data: []
+            }))
+        );
     }
 
     update(id: string, productUpdated: UpdateProductDto) {
-        const response = this.findOne(id)
-        if (!response.ok) {
+        return this.findOne(id)
+            .pipe(
+                switchMap((response) => {
+                    if (!response.ok) {
+                        return of(response)
+                    }
 
-            return response
-        } else {
-
-            this.products = this.products.map((product) => product.id == id ? { ...product, ...productUpdated } : product)
-
-            return {
-                ...response,
-                msg: 'Product updated successfully!'
-            }
-        }
+                    return from(
+                        this.productModel.updateOne({ _id: id }, productUpdated)
+                    ).pipe(
+                        map((result) => {
+                            if (result.modifiedCount > 0) {
+                                return {
+                                    ok: true,
+                                    msg: 'Product updated successfully!',
+                                    data: result,
+                                };
+                            } else {
+                                return {
+                                    ok: false,
+                                    msg: 'No changes made to the product',
+                                    data: [],
+                                };
+                            }
+                        }),
+                        catchError((error) => {
+                            return of({
+                                ok: false,
+                                msg: `Error updating product: ${error.message}`,
+                                data: [],
+                            });
+                        })
+                    );
+                }),
+                catchError((error) => {
+                    return of({
+                        ok: false,
+                        msg: `Error: ${error.message}`,
+                        data: [],
+                    });
+                })
+            )
     }
 
     delete(id: string) {
-        const response = this.findOne(id)
-        if (!response.ok) {
+        return this.findOne(id).pipe(
+            switchMap((response) => {
+                if (!response.ok) {
+                    return of(response)
+                }
 
-            return response
-        } else {
-            this.products = this.products.filter((product) => product.id != id)
-
-            return {
-                ...response,
-                msg: 'Product Deleted successfully!'
-            }
-        }
+                return from(this.productModel.deleteOne({ _id: id })).pipe(
+                    map((result) => {
+                        if (result.deletedCount > 0) {
+                            return {
+                                ok: true,
+                                msg: 'Product deleted successfully!',
+                                data: [],
+                            };
+                        } else {
+                            return {
+                                ok: false,
+                                msg: 'Product not found to delete',
+                                data: [],
+                            };
+                        }
+                    }),
+                    catchError((error) => {
+                        return of({
+                            ok: false,
+                            msg: `Error deleting product: ${error.message}`,
+                            data: [],
+                        });
+                    })
+                );
+            }),
+            catchError((error) => {
+                return of({
+                    ok: false,
+                    msg: `Error: ${error.message}`,
+                    data: [],
+                });
+            })
+        );
     }
 }
