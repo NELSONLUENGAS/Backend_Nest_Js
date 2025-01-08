@@ -14,7 +14,7 @@ import config from 'src/config';
                 const { CONECCTION, USER, PASSWORD, PORT, HOST, NAME } = configService.MONGO
 
                 return {
-                    uri: `${CONECCTION}://${HOST}:${PORT}`,
+                    uri: `${CONECCTION}://${HOST}${PORT ? `:${PORT}` : ''}`,
                     pass: USER,
                     user: PASSWORD,
                     dbName: NAME
