@@ -60,5 +60,18 @@ export const ROUTES = {
     AUTH: {
         BASE: 'auth',
         LOGIN: 'login',
+        REGISTER: 'register',
+        LOGOUT: 'logout',
+        REFRESH: 'refresh',
+        FORGOT_PASSWORD: 'forgot-password',
+        RESET_PASSWORD: 'reset-password',
+        VERIFY_EMAIL: 'verify-email',
+    },
+    PROFILE: {
+        BASE: 'profile',
+        ORDERS: 'orders',
+        FAVORITES: 'favorites',
+        CART: 'cart',
+        SETTINGS: 'settings',
     }
 };

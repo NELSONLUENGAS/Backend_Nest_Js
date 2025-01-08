@@ -14,6 +14,9 @@ const config: Config.InitialOptions = {
         '^@common/(.*)$': '<rootDir>/common/$1',
         '^@products/(.*)$': '<rootDir>/products/$1',
         '^@user/(.*)$': '<rootDir>/user/$1',
+        '^@database/(.*)$': '<rootDir>/database/$1',
+        '^@auth/(.*)$': '<rootDir>/auth/$1',
+        '^@constants/(.*)$': '<rootDir>/constants/$1',
     },
 };
 

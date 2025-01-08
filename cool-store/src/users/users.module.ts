@@ -11,6 +11,7 @@ import { CustomerModel, CustomerSchema } from './models/customer.model';
 import { OrderModel, OrderSchema } from './models/order.model';
 import { UserModel, UserSchema } from './models/user.model';
 import { OrderItemModel, OrderItemSchema } from './models/orderItem.model';
+import { ProfileController } from './controllers/profile.controller';
 
 @Module({
     imports: [
@@ -37,12 +38,13 @@ import { OrderItemModel, OrderItemSchema } from './models/orderItem.model';
     controllers: [
         OrdersController,
         UsersController,
-        CustomersController
+        CustomersController,
+        ProfileController
     ],
     providers: [
         CustomersService,
         UsersService,
-        OrdersService
+        OrdersService,
     ],
     exports: [
         CustomersService,

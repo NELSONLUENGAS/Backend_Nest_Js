@@ -12,7 +12,11 @@ import config from 'src/config';
         MongooseModule.forRootAsync({
             useFactory: (configService: ConfigType<typeof config>) => {
                 const { CONECCTION, USER, PASSWORD, PORT, HOST, NAME } = configService.MONGO
-
+                if (CONECCTION === 'mongodb+srv') {
+                    return {
+                        uri: `${CONECCTION}://${USER}:${PASSWORD}@${HOST}/${NAME}?retryWrites=true&w=majority`
+                    }
+                }
                 return {
                     uri: `${CONECCTION}://${HOST}${PORT ? `:${PORT}` : ''}`,
                     pass: USER,

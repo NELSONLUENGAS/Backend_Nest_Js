@@ -8,7 +8,8 @@ import {
     Param,
     Post,
     Put,
-    Query
+    Query,
+    UseGuards
 } from '@nestjs/common';
 import { ROUTES } from '../../constants/routes';
 import {
@@ -27,7 +28,12 @@ import {
     ApiUpdateCustomerDocumentation
 } from '../api/decorators/customers';
 import { MongoIdPipe } from '../../common/mongo-id/mongo-id.pipe';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { RolesAccess } from '@auth/decorators/roles.decorator';
+import { UserRole } from '@users/interfaces/user.interface';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller(ROUTES.CUSTOMERS.BASE)
 export class CustomersController {
 
@@ -35,6 +41,7 @@ export class CustomersController {
 
     @Post(ROUTES.CUSTOMERS.CREATE)
     @HttpCode(HttpStatus.CREATED)
+    @RolesAccess(UserRole.ADMIN)
     @ApiCreateCustomerDocumentation()
     create(@Body() customer: CreateCustomerDto) {
         return this.customerService.create(customer)
@@ -42,6 +49,7 @@ export class CustomersController {
 
     @Get(ROUTES.CUSTOMERS.GET_ALL)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiFindAllCustomersDocumentation()
     findAll(@Query() queryString: FilterCustomerDto) {
         const { limit = 15, page = 1 } = queryString
@@ -50,6 +58,7 @@ export class CustomersController {
 
     @Get(ROUTES.CUSTOMERS.SEARCH)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiSearchCustomersDocumentation()
     search(@Query() queryString: SearchCustomerDto) {
         const { s: search = '' } = queryString
@@ -58,6 +67,7 @@ export class CustomersController {
 
     @Get(ROUTES.CUSTOMERS.GET_ONE)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiFindOneCustomerDocumentation()
     findOne(@Param('id', MongoIdPipe) customerId: string) {
         return this.customerService.findOne(customerId)
@@ -65,6 +75,7 @@ export class CustomersController {
 
     @Put(ROUTES.CUSTOMERS.UPDATE)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiUpdateCustomerDocumentation()
     update(@Param('id', MongoIdPipe) customerId: string, @Body() customer: UpdateCustomerDto) {
         return this.customerService.update(customerId, customer)
@@ -72,6 +83,7 @@ export class CustomersController {
 
     @Delete(ROUTES.CUSTOMERS.DELETE)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiDeleteCustomerDocumentation()
     delete(@Param('id', MongoIdPipe) customerId: string) {
         return this.customerService.delete(customerId)

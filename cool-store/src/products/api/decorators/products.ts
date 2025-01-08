@@ -1,5 +1,5 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import {
     ApiCreateProductResponse,
     ApiDeleteProductResponse,
@@ -12,6 +12,7 @@ import {
 export function ApiCreateProductDocumentation() {
     return applyDecorators(
         ApiOperation({ summary: 'Create a new product' }),
+        ApiBearerAuth('access-token'),
         ApiResponse({
             status: HttpStatus.CREATED,
             description: 'Product created successfully.',
@@ -20,7 +21,15 @@ export function ApiCreateProductDocumentation() {
         ApiResponse({
             status: HttpStatus.BAD_REQUEST,
             description: 'Invalid input data.'
-        })
+        }),
+        ApiResponse({
+            status: HttpStatus.UNAUTHORIZED,
+            description: 'Unauthorized: Bearer token missing or invalid.',
+        }),
+        ApiResponse({
+            status: HttpStatus.FORBIDDEN,
+            description: 'Forbidden: Insufficient permissions.',
+        }),
     );
 }
 

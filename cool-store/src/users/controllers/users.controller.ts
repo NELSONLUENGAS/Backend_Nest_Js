@@ -8,7 +8,8 @@ import {
     Param,
     Post,
     Put,
-    Query
+    Query,
+    UseGuards
 } from '@nestjs/common';
 import { ROUTES } from '../../constants/routes';
 import {
@@ -29,7 +30,11 @@ import {
     ApiUpdateUserDocumentation
 } from '../api/decorators/users';
 import { MongoIdPipe } from '../../common/mongo-id/mongo-id.pipe';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { RolesAccess } from '@auth/decorators/roles.decorator';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller(ROUTES.USERS.BASE)
 export class UsersController {
 
@@ -37,6 +42,7 @@ export class UsersController {
 
     @Post(ROUTES.USERS.CREATE)
     @HttpCode(HttpStatus.CREATED)
+    @RolesAccess(UserRole.ADMIN)
     @ApiCreateUserDocumentation()
     create(@Body() user: CreateUserDto) {
         return this.userService.create(user)
@@ -44,6 +50,7 @@ export class UsersController {
 
     @Get(ROUTES.USERS.GET_ALL)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiFindAllUsersDocumentation()
     findAll(@Query() queryString: FilterUserDto) {
         const { limit = 15, page = 1 } = queryString
@@ -52,6 +59,7 @@ export class UsersController {
 
     @Get(ROUTES.USERS.SEARCH)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiSearchUsersDocumentation()
     search(@Query() queryString: SearchUsersDto) {
         const { s: search = '' } = queryString
@@ -60,6 +68,7 @@ export class UsersController {
 
     @Get(ROUTES.USERS.GET_ONE)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiFindOneUserDocumentation()
     findOne(@Param('id', MongoIdPipe) userId: string) {
         return this.userService.findOne(userId)
@@ -67,6 +76,7 @@ export class UsersController {
 
     @Get(ROUTES.USERS.GET_BY_ROLE)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiFindUsersByRoleDocumentation()
     findByRole(@Param('role') role: UserRole) {
         return this.userService.findByRole(role)
@@ -74,6 +84,7 @@ export class UsersController {
 
     @Put(ROUTES.USERS.UPDATE)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiUpdateUserDocumentation()
     update(@Param('id', MongoIdPipe) userId: string, @Body() user: UpdateUserDto) {
         return this.userService.update(userId, user)
@@ -81,6 +92,7 @@ export class UsersController {
 
     @Delete(ROUTES.USERS.DELETE)
     @HttpCode(HttpStatus.OK)
+    @RolesAccess(UserRole.ADMIN)
     @ApiDeleteUserDocumentation()
     delete(@Param('id', MongoIdPipe) userId: string) {
         return this.userService.delete(userId)
