@@ -1,5 +1,12 @@
+import { IApiServiceResponse } from "./common.interface"
+
 export interface IBrand {
-    id: string
-    name: string
+    _id: string
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
+export interface IApiBrandsResponse extends IApiServiceResponse {
+    data: IBrand | IBrand[]
+}

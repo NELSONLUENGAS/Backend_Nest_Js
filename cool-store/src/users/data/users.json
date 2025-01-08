@@ -1,0 +1,162 @@
+[
+  {
+    "id": "1",
+    "username": "john_doe",
+    "email": "john.doe@example.com",
+    "password": "password123",
+    "fullName": "John Doe",
+    "role": "user"
+  },
+  {
+    "id": "2",
+    "username": "jane_smith",
+    "email": "jane.smith@example.com",
+    "password": "password123",
+    "fullName": "Jane Smith",
+    "role": "admin"
+  },
+  {
+    "id": "3",
+    "username": "alice_jones",
+    "email": "alice.jones@example.com",
+    "password": "password123",
+    "fullName": "Alice Jones",
+    "role": "user"
+  },
+  {
+    "id": "4",
+    "username": "bob_martin",
+    "email": "bob.martin@example.com",
+    "password": "password123",
+    "fullName": "Bob Martin",
+    "role": "user"
+  },
+  {
+    "id": "5",
+    "username": "lily_white",
+    "email": "lily.white@example.com",
+    "password": "password123",
+    "fullName": "Lily White",
+    "role": "admin"
+  },
+  {
+    "id": "6",
+    "username": "james_brown",
+    "email": "james.brown@example.com",
+    "password": "password123",
+    "fullName": "James Brown",
+    "role": "user"
+  },
+  {
+    "id": "7",
+    "username": "emily_davis",
+    "email": "emily.davis@example.com",
+    "password": "password123",
+    "fullName": "Emily Davis",
+    "role": "user"
+  },
+  {
+    "id": "8",
+    "username": "michael_clark",
+    "email": "michael.clark@example.com",
+    "password": "password123",
+    "fullName": "Michael Clark",
+    "role": "admin"
+  },
+  {
+    "id": "9",
+    "username": "susan_evans",
+    "email": "susan.evans@example.com",
+    "password": "password123",
+    "fullName": "Susan Evans",
+    "role": "user"
+  },
+  {
+    "id": "10",
+    "username": "david_wilson",
+    "email": "david.wilson@example.com",
+    "password": "password123",
+    "fullName": "David Wilson",
+    "role": "user"
+  },
+  {
+    "id": "11",
+    "username": "carol_lee",
+    "email": "carol.lee@example.com",
+    "password": "password123",
+    "fullName": "Carol Lee",
+    "role": "admin"
+  },
+  {
+    "id": "12",
+    "username": "steven_moore",
+    "email": "steven.moore@example.com",
+    "password": "password123",
+    "fullName": "Steven Moore",
+    "role": "user"
+  },
+  {
+    "id": "13",
+    "username": "katherine_taylor",
+    "email": "katherine.taylor@example.com",
+    "password": "password123",
+    "fullName": "Katherine Taylor",
+    "role": "user"
+  },
+  {
+    "id": "14",
+    "username": "paul_johnson",
+    "email": "paul.johnson@example.com",
+    "password": "password123",
+    "fullName": "Paul Johnson",
+    "role": "user"
+  },
+  {
+    "id": "15",
+    "username": "anna_harris",
+    "email": "anna.harris@example.com",
+    "password": "password123",
+    "fullName": "Anna Harris",
+    "role": "admin"
+  },
+  {
+    "id": "16",
+    "username": "george_miller",
+    "email": "george.miller@example.com",
+    "password": "password123",
+    "fullName": "George Miller",
+    "role": "user"
+  },
+  {
+    "id": "17",
+    "username": "olivia_king",
+    "email": "olivia.king@example.com",
+    "password": "password123",
+    "fullName": "Olivia King",
+    "role": "user"
+  },
+  {
+    "id": "18",
+    "username": "henry_scott",
+    "email": "henry.scott@example.com",
+    "password": "password123",
+    "fullName": "Henry Scott",
+    "role": "admin"
+  },
+  {
+    "id": "19",
+    "username": "victoria_adams",
+    "email": "victoria.adams@example.com",
+    "password": "password123",
+    "fullName": "Victoria Adams",
+    "role": "user"
+  },
+  {
+    "id": "20",
+    "username": "daniel_rodgers",
+    "email": "daniel.rodgers@example.com",
+    "password": "password123",
+    "fullName": "Daniel Rodgers",
+    "role": "user"
+  }
+]

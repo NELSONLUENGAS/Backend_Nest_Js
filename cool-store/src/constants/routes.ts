@@ -51,9 +51,14 @@ export const ROUTES = {
         SEARCH: 'search',
         GET_BY_STATUS: 'status/:status',
         GET_BY_CUSTOMER: 'customer/:id',
+        GET_BY_PRODUCT: 'product/:id',
         GET_ONE: ':id',
         UPDATE: ':id',
         DELETE: ':id',
         GET_TOTAL_PRICE: ':id/total',
     },
+    AUTH: {
+        BASE: 'auth',
+        LOGIN: 'login',
+    }
 };

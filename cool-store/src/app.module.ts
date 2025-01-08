@@ -10,6 +10,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { DatabaseModule } from './database/database.module';
 import { environments } from './environments';
+import { AuthModule } from './auth/auth.module';
 import config from './config';
 
 @Module({
@@ -26,12 +27,14 @@ import config from './config';
                 DB_PORT: Joi.number().required(),
                 DB_HOST: Joi.string().required(),
                 DB_CONECCTION: Joi.string().required(),
+                JWT_SECRET: Joi.string().required(),
             })
         }),
         UsersModule,
         ProductsModule,
         HttpModule,
-        DatabaseModule
+        DatabaseModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [

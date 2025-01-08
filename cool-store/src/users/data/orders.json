@@ -1,0 +1,162 @@
+[
+  {
+    "customerId": "1",
+    "shippingAddress": "123 Main St, City, Country",
+    "status": "pending",
+    "totalPrice": 200,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "2",
+    "shippingAddress": "456 Elm St, City, Country",
+    "status": "shipped",
+    "totalPrice": 150,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "3",
+    "shippingAddress": "789 Oak St, City, Country",
+    "status": "pending",
+    "totalPrice": 300,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "4",
+    "shippingAddress": "101 Pine St, City, Country",
+    "status": "delivered",
+    "totalPrice": 100,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "5",
+    "shippingAddress": "202 Maple St, City, Country",
+    "status": "shipped",
+    "totalPrice": 400,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "6",
+    "shippingAddress": "303 Birch St, City, Country",
+    "status": "pending",
+    "totalPrice": 50,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "7",
+    "shippingAddress": "404 Cedar St, City, Country",
+    "status": "delivered",
+    "totalPrice": 220,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "8",
+    "shippingAddress": "505 Walnut St, City, Country",
+    "status": "pending",
+    "totalPrice": 120,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "9",
+    "shippingAddress": "606 Ash St, City, Country",
+    "status": "shipped",
+    "totalPrice": 300,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "10",
+    "shippingAddress": "707 Pine St, City, Country",
+    "status": "pending",
+    "totalPrice": 500,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "11",
+    "shippingAddress": "808 Oak St, City, Country",
+    "status": "delivered",
+    "totalPrice": 180,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "12",
+    "shippingAddress": "909 Birch St, City, Country",
+    "status": "pending",
+    "totalPrice": 250,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "13",
+    "shippingAddress": "1010 Cedar St, City, Country",
+    "status": "shipped",
+    "totalPrice": 450,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "14",
+    "shippingAddress": "1111 Maple St, City, Country",
+    "status": "pending",
+    "totalPrice": 220,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "15",
+    "shippingAddress": "1212 Walnut St, City, Country",
+    "status": "delivered",
+    "totalPrice": 360,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "16",
+    "shippingAddress": "1313 Ash St, City, Country",
+    "status": "shipped",
+    "totalPrice": 180,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "17",
+    "shippingAddress": "1414 Pine St, City, Country",
+    "status": "pending",
+    "totalPrice": 160,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "18",
+    "shippingAddress": "1515 Oak St, City, Country",
+    "status": "delivered",
+    "totalPrice": 270,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "19",
+    "shippingAddress": "1616 Birch St, City, Country",
+    "status": "shipped",
+    "totalPrice": 200,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  },
+  {
+    "customerId": "20",
+    "shippingAddress": "1717 Cedar St, City, Country",
+    "status": "pending",
+    "totalPrice": 500,
+    "createdAt": "2024-12-29T12:00:00Z",
+    "updatedAt": "2024-12-29T12:00:00Z"
+  }
+]

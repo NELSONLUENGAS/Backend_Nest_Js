@@ -1,0 +1,11 @@
+[
+  { "id": "1", "name": "TechCorp" },
+  { "id": "2", "name": "Innovatek" },
+  { "id": "3", "name": "SoundWave" },
+  { "id": "4", "name": "TimeTech" },
+  { "id": "5", "name": "VisionPlus" },
+  { "id": "6", "name": "PlayNext" },
+  { "id": "7", "name": "ClickMaster" },
+  { "id": "8", "name": "PowerUp" },
+  { "id": "9", "name": "PhotoGenius" }
+]

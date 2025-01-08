@@ -1,0 +1,11 @@
+[
+  { "id": "1", "name": "Electronics" },
+  { "id": "2", "name": "Audio" },
+  { "id": "3", "name": "Wearables" },
+  { "id": "4", "name": "Gaming" },
+  { "id": "5", "name": "Accessories" },
+  { "id": "6", "name": "Photography" },
+  { "id": "7", "name": "Home Appliances" },
+  { "id": "8", "name": "Clothing" },
+  { "id": "9", "name": "Footwear" }
+]

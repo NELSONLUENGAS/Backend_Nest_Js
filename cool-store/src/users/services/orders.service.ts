@@ -1,200 +1,322 @@
-import { Injectable } from '@nestjs/common';
-import { ProductsService } from 'src/products/services/products.service';
-import { CreateOrderDto, UpdateOrderDto } from 'src/users/dtos/orders.dto';
-import { IOrder, OrderStatus } from 'src/users/interfaces/order.interface';
-import { v4 as uuidv4 } from 'uuid';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
+import { CreateOrderDto, UpdateOrderDto } from '../dtos/orders.dto';
+import { IApiOrdersResponse, OrderStatus } from '../interfaces/order.interface';
+import { OrderModel } from '../models/order.model';
+import { Model } from 'mongoose';
+import { IApiServiceError } from '../interfaces/common.interface';
+import { OrderItemModel } from '../models/orderItem.model';
 
 @Injectable()
 export class OrdersService {
+    constructor(
+        @InjectModel(OrderModel.name) private orderModel: Model<OrderModel>,
+        @InjectModel(OrderItemModel.name) private orderItemModel: Model<OrderItemModel>
+    ) { }
 
-    constructor(readonly productService: ProductsService) { }
 
-    private orders: IOrder[] = [
-        { id: '1', customerId: '1', productId: '1', quantity: 2, status: OrderStatus.PENDING, totalPrice: 200, shippingAddress: '123 Main St, City, Country' },
-        { id: '2', customerId: '2', productId: '2', quantity: 1, status: OrderStatus.SHIPPED, totalPrice: 150, shippingAddress: '456 Elm St, City, Country' },
-        { id: '3', customerId: '3', productId: '3', quantity: 3, status: OrderStatus.PENDING, totalPrice: 300, shippingAddress: '789 Oak St, City, Country' },
-        { id: '4', customerId: '4', productId: '4', quantity: 2, status: OrderStatus.DELIVERED, totalPrice: 100, shippingAddress: '101 Pine St, City, Country' },
-        { id: '5', customerId: '5', productId: '5', quantity: 4, status: OrderStatus.SHIPPED, totalPrice: 400, shippingAddress: '202 Maple St, City, Country' },
-        { id: '6', customerId: '6', productId: '6', quantity: 1, status: OrderStatus.PENDING, totalPrice: 50, shippingAddress: '303 Birch St, City, Country' },
-        { id: '7', customerId: '7', productId: '7', quantity: 2, status: OrderStatus.DELIVERED, totalPrice: 220, shippingAddress: '404 Cedar St, City, Country' },
-        { id: '8', customerId: '8', productId: '8', quantity: 1, status: OrderStatus.PENDING, totalPrice: 120, shippingAddress: '505 Walnut St, City, Country' },
-        { id: '9', customerId: '9', productId: '9', quantity: 3, status: OrderStatus.SHIPPED, totalPrice: 300, shippingAddress: '606 Ash St, City, Country' },
-        { id: '10', customerId: '10', productId: '10', quantity: 5, status: OrderStatus.PENDING, totalPrice: 500, shippingAddress: '707 Pine St, City, Country' },
-        { id: '11', customerId: '11', productId: '11', quantity: 2, status: OrderStatus.DELIVERED, totalPrice: 180, shippingAddress: '808 Oak St, City, Country' },
-        { id: '12', customerId: '12', productId: '12', quantity: 1, status: OrderStatus.PENDING, totalPrice: 250, shippingAddress: '909 Birch St, City, Country' },
-        { id: '13', customerId: '13', productId: '13', quantity: 3, status: OrderStatus.SHIPPED, totalPrice: 450, shippingAddress: '1010 Cedar St, City, Country' },
-        { id: '14', customerId: '14', productId: '14', quantity: 2, status: OrderStatus.PENDING, totalPrice: 220, shippingAddress: '1111 Maple St, City, Country' },
-        { id: '15', customerId: '15', productId: '15', quantity: 4, status: OrderStatus.DELIVERED, totalPrice: 360, shippingAddress: '1212 Walnut St, City, Country' },
-        { id: '16', customerId: '16', productId: '16', quantity: 1, status: OrderStatus.SHIPPED, totalPrice: 180, shippingAddress: '1313 Ash St, City, Country' },
-        { id: '17', customerId: '17', productId: '17', quantity: 2, status: OrderStatus.PENDING, totalPrice: 160, shippingAddress: '1414 Pine St, City, Country' },
-        { id: '18', customerId: '18', productId: '18', quantity: 3, status: OrderStatus.DELIVERED, totalPrice: 270, shippingAddress: '1515 Oak St, City, Country' },
-        { id: '19', customerId: '19', productId: '19', quantity: 2, status: OrderStatus.SHIPPED, totalPrice: 200, shippingAddress: '1616 Birch St, City, Country' },
-        { id: '20', customerId: '20', productId: '20', quantity: 5, status: OrderStatus.PENDING, totalPrice: 500, shippingAddress: '1717 Cedar St, City, Country' }
-    ]
-
-    findAll(limit: number, page: number) {
+    findAll(limit: number, page: number): Observable<IApiOrdersResponse | IApiServiceError> {
         const offset = Math.abs(page - 1) * limit;
-        const orders = this.orders.slice(offset, offset + limit);
-
-        if (!orders.length) {
-            return {
-                ok: false,
-                data: [],
-                msg: 'No orders found'
-            };
-        } else {
-            return {
-                ok: true,
-                msg: 'Orders fetched successfully!',
-                data: orders
-            };
-        }
-    }
-
-    findAllByCustomer(customerId: string) {
-        const orders = this.orders.filter((order) => order.customerId === customerId);
-
-        if (!orders.length) {
-            return {
-                ok: false,
-                data: [],
-                msg: 'No orders found for this customer'
-            };
-        } else {
-            const ordersComplete = orders.map((order) => ({
-                ...order,
-                // productDetail: this.productService.findOne(order.productId).data
-            }))
-
-            return {
-                ok: true,
-                msg: 'Orders fetched successfully!',
-                data: ordersComplete
-            };
-        }
-    }
-
-    findOne(id: string) {
-        const order = this.orders.find((order) => order.id === id);
-
-        if (!order) {
-            return {
-                ok: false,
-                data: {},
-                msg: 'No order found'
-            };
-        } else {
-            // order['productDetail'] = this.productService.findOne(order?.productId).data
-            return {
-                ok: true,
-                data: order,
-                msg: 'Order fetched successfully!'
-            };
-        }
-    }
-
-    search(query: string) {
-        const orders = this.orders.filter((order) =>
-            Object.values(order).some((value) =>
-                value.toString().toLowerCase().includes(query.toLowerCase())
-            )
+        return from(
+            this.orderModel
+                .find()
+                .skip(offset)
+                .limit(limit)
+                .populate('orderItems')
+                .exec()
+        ).pipe(
+            map((orders) => {
+                if (!orders.length) {
+                    throw new NotFoundException('Orders not found');
+                } else {
+                    return {
+                        ok: true,
+                        message: 'Orders fetched successfully!',
+                        data: orders,
+                    };
+                }
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
         );
-
-        if (!orders.length) {
-            return {
-                ok: false,
-                data: [],
-                msg: 'No orders found'
-            };
-        } else {
-            return {
-                ok: true,
-                msg: 'Orders fetched successfully!',
-                data: orders
-            };
-        }
     }
 
-    create(order: CreateOrderDto) {
-        const id: string = uuidv4();
-
-        const newOrder: IOrder = {
-            ...order,
-            id
-        };
-
-        this.orders.push(newOrder);
-
-        return {
-            ok: true,
-            data: newOrder,
-            msg: 'Order created successfully!'
-        };
+    findByCustomer(customerId: string): Observable<IApiOrdersResponse | IApiServiceError> {
+        return from(
+            this.orderModel
+                .find({ customerId: customerId })
+                .populate('orderItems')
+                .exec()
+        ).pipe(
+            map((orders) => {
+                if (!orders.length) {
+                    throw new NotFoundException('Orders not found');
+                } else {
+                    return {
+                        ok: true,
+                        message: 'Orders fetched successfully!',
+                        data: orders,
+                    };
+                }
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
     }
 
-    update(id: string, orderUpdated: UpdateOrderDto) {
-        const response = this.findOne(id);
-        if (!response.ok) {
-            return response;
-        } else {
-            this.orders = this.orders.map((order) =>
-                order.id === id ? { ...order, ...orderUpdated } : order
-            );
-
-            return {
-                ...response,
-                msg: 'Order updated successfully!'
-            };
-        }
+    findByProduct(productId: string): Observable<IApiOrdersResponse | IApiServiceError> {
+        return from(
+            this.orderModel
+                .find({ 'orderItems.productId': productId })
+                .populate('orderItems')
+                .exec()
+        ).pipe(
+            map((orders) => {
+                if (!orders.length) {
+                    throw new NotFoundException('Orders not found');
+                } else {
+                    return {
+                        ok: true,
+                        message: 'Orders fetched successfully!',
+                        data: orders,
+                    };
+                }
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
     }
 
-    delete(id: string) {
-        const response = this.findOne(id);
-        if (!response.ok) {
-            return response;
-        } else {
-            this.orders = this.orders.filter((order) => order.id !== id);
-
-            return {
-                ...response,
-                msg: 'Order deleted successfully!'
-            };
-        }
+    findByStatus(status: OrderStatus): Observable<IApiOrdersResponse | IApiServiceError> {
+        return from(
+            this.orderModel
+                .find({ status: status })
+                .populate('orderItems')
+                .exec()
+        ).pipe(
+            map((orders) => {
+                if (!orders.length) {
+                    throw new NotFoundException('Orders not found');
+                } else {
+                    return {
+                        ok: true,
+                        message: 'Orders fetched successfully!',
+                        data: orders,
+                    };
+                }
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
     }
 
-    findByStatus(status: OrderStatus) {
-        console.log(status)
-        const orders = this.orders.filter((order) => order.status === status);
-
-        if (!orders.length) {
-            return {
-                ok: false,
-                data: [],
-                msg: `No orders found with status: ${status}`
-            };
-        } else {
-            return {
-                ok: true,
-                msg: 'Orders fetched successfully!',
-                data: orders
-            };
-        }
+    findOne(id: string): Observable<IApiOrdersResponse | IApiServiceError> {
+        return from(
+            this.orderModel
+                .findById(id)
+                .populate('orderItems')
+                .exec()
+        ).pipe(
+            map((order: OrderModel) => {
+                if (!order) {
+                    throw new NotFoundException('Order not found');
+                } else {
+                    return {
+                        ok: true,
+                        message: 'Order fetched successfully!',
+                        data: order,
+                    };
+                }
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
     }
 
-    calculateTotalPrice(orderId: string) {
-        const order = this.orders.find((order) => order.id === orderId);
-        if (!order) {
-            return {
-                ok: false,
-                msg: 'Order not found'
-            };
-        } else {
-            const totalPrice = order.quantity * order.totalPrice;
-            return {
-                ok: true,
-                msg: 'Total price calculated successfully!',
-                totalPrice
-            };
-        }
+    getTotalPrice(orderId: string): Observable<IApiOrdersResponse | IApiServiceError> {
+        return from(
+            this.orderModel
+                .findById(orderId)
+                .populate('orderItems')
+                .exec()
+        ).pipe(
+            map((order: OrderModel) => {
+                if (!order) {
+                    throw new NotFoundException('Order not found');
+                } else {
+                    const totalPrice = order.orderItems.reduce((total, item) => {
+                        return total + (item.price * item.quantity);
+                    }, 0);
+
+                    return {
+                        ok: true,
+                        message: 'Total price calculated successfully!',
+                        data: [],
+                        totalPrice
+                    }
+                };
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
+    }
+
+    create(order: CreateOrderDto): Observable<IApiOrdersResponse | IApiServiceError> {
+        const orderItemsData = order.orderItems.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.price,
+        }));
+
+        return from(this.orderItemModel.insertMany(orderItemsData)).pipe(
+            switchMap((savedOrderItems) => {
+                const newOrder = {
+                    customerId: order.customerId,
+                    status: order.status,
+                    shippingAddress: order.shippingAddress,
+                    orderItems: savedOrderItems.map(item => item._id),
+                    totalPrice: savedOrderItems.reduce((sum, item) => sum + (item.quantity * item.price), 0),
+                };
+
+                return from(this.orderModel.create(newOrder)).pipe(
+                    switchMap((savedOrder) => {
+                        const updateOrderItems = savedOrderItems.map((item) => {
+                            return this.orderItemModel.findByIdAndUpdate(
+                                item._id,
+                                { orderId: savedOrder._id },
+                                { new: true }
+                            ).exec();
+                        });
+
+                        return from(Promise.all(updateOrderItems)).pipe(
+                            map(() => ({
+                                ok: true,
+                                message: 'Order created successfully!',
+                                data: savedOrder,
+                            })),
+                            catchError((error): Observable<IApiServiceError> => {
+                                return of({
+                                    ok: false,
+                                    ...error.response ?? error,
+                                });
+                            })
+                        );
+                    }),
+                    catchError((error): Observable<IApiServiceError> => {
+                        return from(this.orderItemModel.deleteMany({
+                            _id: { $in: savedOrderItems.map(item => item._id) },
+                        })).pipe(
+                            switchMap(() => of({
+                                ok: false,
+                                ...error.response ?? error,
+                            }))
+                        );
+                    })
+                );
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
+    }
+
+    update(id: string, payload: UpdateOrderDto): Observable<IApiOrdersResponse | IApiServiceError> {
+        return this.findOne(id).pipe(
+            switchMap((response) => {
+                if (!response.ok) {
+                    return of(response);
+                }
+
+                return from(
+                    this.orderModel.findOneAndUpdate({ _id: id }, payload, { new: true })
+                ).pipe(
+                    map((updatedOrder) => {
+                        if (!updatedOrder) {
+                            throw new BadRequestException('The order could not be updated.');
+                        }
+                        return {
+                            ok: true,
+                            message: 'Order updated successfully!',
+                            data: updatedOrder,
+                        };
+                    }),
+                    catchError((error): Observable<IApiServiceError> => {
+                        return of({
+                            ok: false,
+                            ...error.response ?? error,
+                        });
+                    })
+                );
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
+    }
+
+    delete(id: string): Observable<IApiOrdersResponse | IApiServiceError> {
+        return this.findOne(id).pipe(
+            switchMap((response) => {
+                if (!response.ok) {
+                    return of(response);
+                }
+
+                return from(this.orderModel.findOneAndDelete({ _id: id })).pipe(
+                    map((orderDeleted): IApiOrdersResponse => {
+                        if (!orderDeleted) {
+                            throw new BadRequestException('The order could not be deleted.');
+                        }
+                        return {
+                            ok: true,
+                            message: 'Order deleted successfully!',
+                            data: orderDeleted,
+                        };
+                    }),
+                    catchError((error): Observable<IApiServiceError> => {
+                        return of({
+                            ok: false,
+                            ...error.response ?? error,
+                        });
+                    })
+                );
+            }),
+            catchError((error): Observable<IApiServiceError> => {
+                return of({
+                    ok: false,
+                    ...error.response ?? error,
+                });
+            })
+        );
     }
 }

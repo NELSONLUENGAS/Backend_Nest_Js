@@ -1,5 +1,8 @@
+import { ProductModel } from "../models/product.model"
+import { IApiServiceResponse } from "./common.interface"
+
+
 export interface IProduct {
-    id: string
     name: string
     description: string
     image: string
@@ -7,4 +10,8 @@ export interface IProduct {
     stock: number
     category: string
     brand: string
+}
+
+export interface IApiProductsResponse extends IApiServiceResponse {
+    data: ProductModel | ProductModel[]
 }
